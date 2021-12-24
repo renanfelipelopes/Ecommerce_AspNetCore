@@ -14,6 +14,13 @@ namespace DevIO.Data.Repository
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new() //esse new quer dizer que podemos dar um new() nessa Entity
     {
         protected readonly MeuDbContext Db;
+
+        protected Repository(MeuDbContext db)
+        {
+            Db = db;
+            DbSet = db.Set<TEntity>();
+        }
+
         protected readonly DbSet<TEntity> DbSet;
 
         public async Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate)
