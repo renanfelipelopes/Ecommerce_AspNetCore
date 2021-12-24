@@ -16,13 +16,15 @@ namespace DevIO.Data.Repository
         public async Task<Produto> ObterProdutoFornecedor(Guid id)
         {
             return await Db.Produtos.AsNoTracking()
-                .Include(f => f.Fornecedor).FirstOrDefaultAsync(p => p.Id == id); //nessa query fazemos um innerjoin entre produto e fornecedor
+                .Include(f => f.Fornecedor)
+                .FirstOrDefaultAsync(p => p.Id == id); //nessa query fazemos um innerjoin entre produto e fornecedor
         }
 
         public async Task<IEnumerable<Produto>> ObterProdutosFornecedores()
         {
             return await Db.Produtos.AsNoTracking()
-                .OrderBy(p => p.Nome).ToListAsync(); //obter todos os produtos com os dados dos fornecedores, retornando uma lista organizada por nome
+                .OrderBy(p => p.Nome)
+                .ToListAsync(); //obter todos os produtos com os dados dos fornecedores, retornando uma lista organizada por nome
         }
 
         public async Task<IEnumerable<Produto>> ObterProdutosPorFornecedor(Guid fornecedorId)
