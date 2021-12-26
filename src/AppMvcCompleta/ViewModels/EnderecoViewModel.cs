@@ -1,11 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevIO.App.ViewModels
 {
     public class EnderecoViewModel
     {
+        [Key]
+        public Guid Id { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(200, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)] 
+        public string Logradouro { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(50, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
+        public string Numero { get; set; }
+
+        public string Complemento { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(8, ErrorMessage = "O campo {0} precisa ter {1} caracteres", MinimumLength = 8)]
+        public string Cep { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(100, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
+        public string Bairro { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(100, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
+        public string Cidade { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(50, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
+        public string Estado { get; set; }
+
+        [HiddenInput] //O HiddenInput é uma propriedade que diz que esse campo sera sempre tratado como hidden (type=hidden) ao inves de um campo texto. É importante passar essas informações para que nosso Scaffold seja o mais acertivo possivel e tenhamos menos coisas para arrumar posteriomente
+        public Guid FornecedorId { get; set; } //O FornecedorId serve para saber a quem pertence esse endereço 
     }
 }
