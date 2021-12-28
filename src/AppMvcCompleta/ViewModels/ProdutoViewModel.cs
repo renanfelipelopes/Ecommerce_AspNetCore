@@ -28,7 +28,7 @@ namespace DevIO.App.ViewModels
         public string Descricao { get; set; }
 
         //para trabalharmos com upload de arquivo, a entidade nao pode ser do tipo string, ele precisa trabalhar de outra forma, mas nao podemos perder a entidade Imagem pq ele vai continuar mapeando o banco de dados, entao vamos duplicar a entidade imagem com outro nome e do tipo IFormFile, e nesse tipo ele possui propriedades como nome do arquivo, extensao do arquivo, tamanho etc...
-        //public IFormFile ImagemUpload { get; set; }
+        public IFormFile ImagemUpload { get; set; }
         public string Imagem { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
@@ -41,5 +41,6 @@ namespace DevIO.App.ViewModels
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
         public FornecedorViewModel Fornecedor { get; set; }
+        public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
     }
 }
