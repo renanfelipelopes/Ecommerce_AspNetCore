@@ -41,6 +41,10 @@ namespace AppMvcCompleta
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddAutoMapper(typeof(Startup));
+
+            //services.AddMvc().SetCompatibilityVersion(version: Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+
             services.AddScoped<MeuDbContext>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
