@@ -8,34 +8,35 @@ using Microsoft.EntityFrameworkCore;
 using AppMvcCompleta.Data;
 using DevIO.App.ViewModels;
 using DevIO.Business.Interfaces;
+using AutoMapper;
+using AppMvcBasica.Models;
 
 namespace DevIO.App.Controllers
 {
     public class ProdutosController : BaseController
     {
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IMapper _mapper;
 
-        public ProdutosController(IProdutoRepository produtoRepository)
+        public ProdutosController(IProdutoRepository produtoRepository, 
+                                  IFornecedorRepository fornecedorRepository, 
+                                  IMapper mapper)
         {
             _produtoRepository = produtoRepository;
+            _fornecedorRepository = fornecedorRepository;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ProdutoViewModel.Include(p => p.Fornecedor);
-            return View(await applicationDbContext.ToListAsync());
+            return View(_mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterProdutosFornecedores()));
         }
 
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var produtoViewModel = await ObterProduto(id);
 
-            var produtoViewModel = await _context.ProdutoViewModel
-                .Include(p => p.Fornecedor)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (produtoViewModel == null)
             {
                 return NotFound();
@@ -44,40 +45,35 @@ namespace DevIO.App.Controllers
             return View(produtoViewModel);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["FornecedorId"] = new SelectList(_context.Set<FornecedorViewModel>(), "Id", "Documento");
-            return View();
+            var ProdutoViewModel = await PopularFornecedores(new ProdutoViewModel());
+            return View(ProdutoViewModel);
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FornecedorId,Nome,Descricao,Imagem,Valor,Ativo")] ProdutoViewModel produtoViewModel)
+        public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                produtoViewModel.Id = Guid.NewGuid();
-                _context.Add(produtoViewModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["FornecedorId"] = new SelectList(_context.Set<FornecedorViewModel>(), "Id", "Documento", produtoViewModel.FornecedorId);
+            produtoViewModel = await PopularFornecedores(produtoViewModel);
+
+            if (!ModelState.IsValid) return View(produtoViewModel);
+
+            await _produtoRepository.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+
             return View(produtoViewModel);
         }
 
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var produtoViewModel = await ObterProduto(id);
 
-            var produtoViewModel = await _context.ProdutoViewModel.FindAsync(id);
             if (produtoViewModel == null)
             {
                 return NotFound();
             }
-            ViewData["FornecedorId"] = new SelectList(_context.Set<FornecedorViewModel>(), "Id", "Documento", produtoViewModel.FornecedorId);
+
+            //nesse caso não precisamos popular um fornecedor pq teoricamente nao deveriamos trocar de fornecedor assim que nos registramos ele. mas se quisermos ter a opcao de fazer a troca, é so fazer igual fizemos no metodo create
             return View(produtoViewModel);
         }
 
@@ -142,9 +138,21 @@ namespace DevIO.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProdutoViewModelExists(Guid id)
+        private async Task<ProdutoViewModel> ObterProduto(Guid id)
         {
-            return _context.ProdutoViewModel.Any(e => e.Id == id);
+            //mapear o ProdutoViewModel atraves de uma lista de ProdutoFornecedor. Entao nessa variavel vamos ter o produto e o fornecedor dele
+            var produto = _mapper.Map<ProdutoViewModel>(await _produtoRepository.ObterProdutoFornecedor(id));
+
+            //vamos mapear tbm na lista de fornecedores que criamos agora, uma lista de fornecedores utilizando o _fornecedoresRepository, retornando um objeto só 
+            produto.Fornecedores = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorRepository.ObterTodos());
+
+            return produto;
+        }
+
+        private async Task<ProdutoViewModel> PopularFornecedores(ProdutoViewModel produto)
+        {
+            produto.Fornecedores = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorRepository.ObterTodos());
+            return produto;
         }
     }
 }
