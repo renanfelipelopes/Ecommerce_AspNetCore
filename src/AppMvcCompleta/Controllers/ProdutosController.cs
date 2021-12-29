@@ -69,7 +69,6 @@ namespace DevIO.App.Controllers
                 return NotFound();
             }
 
-            //nesse caso não precisamos popular um fornecedor pq teoricamente nao deveriamos trocar de fornecedor assim que nos registramos ele. mas se quisermos ter a opcao de fazer a troca, é so fazer igual fizemos no metodo create
             return View(produtoViewModel);
         }
 
