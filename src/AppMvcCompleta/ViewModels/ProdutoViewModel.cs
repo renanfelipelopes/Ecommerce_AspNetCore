@@ -27,7 +27,7 @@ namespace DevIO.App.ViewModels
         [StringLength(200, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
         public string Descricao { get; set; }
 
-        //para trabalharmos com upload de arquivo, a entidade nao pode ser do tipo string, ele precisa trabalhar de outra forma, mas nao podemos perder a entidade Imagem pq ele vai continuar mapeando o banco de dados, entao vamos duplicar a entidade imagem com outro nome e do tipo IFormFile, e nesse tipo ele possui propriedades como nome do arquivo, extensao do arquivo, tamanho etc...
+        [DisplayName("Imagem do Produto")]
         public IFormFile ImagemUpload { get; set; }
         public string Imagem { get; set; }
 
