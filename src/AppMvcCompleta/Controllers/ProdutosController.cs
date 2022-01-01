@@ -89,9 +89,35 @@ namespace DevIO.App.Controllers
         {
             if (id != produtoViewModel.Id) return NotFound();
 
+            //capturar dados de uma instancia diferente da que veio pelo parametro produtoViewModel, para ter os dados separados que veio via formulario e dos dados do banco
+            var produtoAtualizacao = await ObterProduto(id);
+            //aqui eu repasso o que veio do banco sem precisar ir no banco de novo
+            produtoViewModel.Fornecedor = produtoAtualizacao.Fornecedor;
+            //se a img for atualizada, aqui nós tbm repassamos ela
+            produtoViewModel.Imagem = produtoAtualizacao.Imagem;
+
             if (!ModelState.IsValid) return View(produtoViewModel);
 
-            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoViewModel));
+            //validar se a img foi preenchida, e se realmente tenho a intençao de realizar um novo upload de img
+            if (produtoViewModel.ImagemUpload != null)
+            {
+                var imgPrefixo = Guid.NewGuid() + "_";
+                if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo))
+                {
+                    return View(produtoViewModel);
+                }
+            
+                produtoAtualizacao.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+            }
+
+            //uma tecnica segura para edicao, pq evitamos que na hora de editar a pessoa force a editacao de campos que vc nao queira, como por exemplo, atribuir um novo registro no campo fornecedor para o produto, que combinamos ser nossa regra de negócio nao poder fazer
+            produtoAtualizacao.Nome = produtoViewModel.Nome;
+            produtoAtualizacao.Descricao = produtoViewModel.Descricao;
+            produtoAtualizacao.Valor = produtoViewModel.Valor;
+            produtoAtualizacao.Ativo = produtoViewModel.Ativo;
+
+            //passamos para fazer o mapeamento o produtoAtualizacao
+            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoAtualizacao));
 
             return RedirectToAction("Index");
         }
