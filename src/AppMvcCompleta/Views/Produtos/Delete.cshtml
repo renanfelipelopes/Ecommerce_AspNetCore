@@ -1,6 +1,6 @@
 ﻿@model DevIO.App.ViewModels.ProdutoViewModel
 
-@{ 
+@{
     ViewData["Title"] = "Excluir " + Model.Nome;
 }
 
@@ -15,46 +15,49 @@
     <div class="col-md-6">
         <dl>
             <dt>
-                @Html.DisplayNameFor(expression: model => model.FornecedorId)
+                @Html.DisplayNameFor(model => model.FornecedorId)
             </dt>
             <dd>
-                @Html.DisplayFor(expression: model => model.Fornecedor.Nome)
+                @Html.DisplayFor(model => model.Fornecedor.Nome)
             </dd>
             <dt>
-                @Html.DisplayNameFor(expression: model => model.Nome)
+                @Html.DisplayNameFor(model => model.Nome)
             </dt>
             <dd>
-                @Html.DisplayFor(expression: model => model.Nome)
+                @Html.DisplayFor(model => model.Nome)
             </dd>
             <dt>
-                @Html.DisplayNameFor(expression: model => model.Descricao)
+                @Html.DisplayNameFor(model => model.Descricao)
             </dt>
             <dd>
-                @Html.DisplayFor(expression: model => model.Descricao)
+                @Html.DisplayFor(model => model.Descricao)
             </dd>
             <dt>
-                @Html.DisplayNameFor(expression: model => model.Valor)
+                @Html.DisplayNameFor(model => model.Valor)
             </dt>
             <dd>
-                @Model.Valor.ToString(format: "C")
+                @Model.Valor.ToString("C")
             </dd>
             <dt>
-                @Html.DisplayNameFor(expression: model => model.DataCadastro)
+                @Html.DisplayNameFor(model => model.DataCadastro)
             </dt>
             <dd>
-                @Html.DisplayFor(expression: model => model.DataCadastro)
+                @Html.DisplayFor(model => model.DataCadastro)
             </dd>
             <dt>
-                @Html.DisplayNameFor(expression: model => model.Ativo)
+                @Html.DisplayNameFor(model => model.Ativo)
             </dt>
             <dd>
-                @Html.DisplayFor(expression: model => model.Ativo)
+                @Html.DisplayFor(model => model.Ativo)
             </dd>
         </dl>
-        <form asp-action="Delete">
-            <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Excluir" class="btn btn-danger" />
-            <a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
-        </form>
+
+        <div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Excluir" class="btn btn-danger" />
+                <a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
+            </form>
+        </div>
     </div>
 </div>

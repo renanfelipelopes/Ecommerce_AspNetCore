@@ -1,6 +1,6 @@
 ﻿@model DevIO.App.ViewModels.ProdutoViewModel
 
-@{
+@{ 
     ViewData["Title"] = "Detalhe do Produto - " + Model.Nome;
 }
 
@@ -13,45 +13,44 @@
     <div class="col-md-6">
         <dl>
             <dt>
-                @Html.DisplayNameFor(model => model.FornecedorId)
+                @Html.DisplayNameFor(expression: model => model.FornecedorId)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Fornecedor.Nome)
+                @Html.DisplayFor(expression: model => model.Fornecedor.Nome)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Nome)
+                @Html.DisplayNameFor(expression: model => model.Nome)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Nome)
+                @Html.DisplayFor(expression: model => model.Nome)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Descricao)
+                @Html.DisplayNameFor(expression: model => model.Descricao)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Descricao)
+                @Html.DisplayFor(expression: model => model.Descricao)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Valor)
+                @Html.DisplayNameFor(expression: model => model.Valor)
             </dt>
             <dd>
-                @Model.Valor.ToString("C")
+                @Model.Valor.ToString(format: "C")
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.DataCadastro)
+                @Html.DisplayNameFor(expression: model => model.DataCadastro)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.DataCadastro)
+                @Html.DisplayFor(expression: model => model.DataCadastro)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Ativo)
+                @Html.DisplayNameFor(expression: model => model.Ativo)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Ativo)
+                @Html.DisplayFor(expression: model => model.Ativo)
             </dd>
         </dl>
-
         <div>
-            <a supress-by-claim-name="Produto" supress-by-claim-value="Editar" class="btn btn-dark" sp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+            <a class="btn btn-dark" sp-action="Edit" asp-route-id="@Model.Id">Editar</a>
             <a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
         </div>
     </div>
