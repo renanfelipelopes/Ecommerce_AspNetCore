@@ -6,6 +6,7 @@ using DevIO.App.ViewModels;
 using DevIO.Business.Interfaces;
 using AutoMapper;
 using AppMvcBasica.Models;
+using Thinktecture.IdentityModel.Authorization.Mvc;
 
 namespace DevIO.App.Controllers
 {
@@ -102,6 +103,20 @@ namespace DevIO.App.Controllers
             await _fornecedorRepository.Remover(id);
 
             return RedirectToAction("Index");
+        }
+
+        [ClaimsAuthorize("Fornecedor", "Editar")]
+        [Route("atualizar-endereco-fornecedor/{id:guid}")]
+        public async Task<IActionResult> AtualizarEndereco(Guid id)
+        {
+            var fornecedor = await ObterFornecedorEndereco(id);
+
+            if (fornecedor == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_AtualizarEndereco", new FornecedorViewModel { Endereco = fornecedor.Endereco });
         }
 
         private async Task<FornecedorViewModel> ObterFornecedorEndereco(Guid id)
