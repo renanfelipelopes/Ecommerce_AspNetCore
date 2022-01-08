@@ -13,11 +13,15 @@ namespace DevIO.App.Controllers
     public class FornecedoresController : Controller
     {
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
         private readonly IMapper _mapper;
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, IMapper mapper)
+        public FornecedoresController(IFornecedorRepository fornecedorRepository, 
+                                      IMapper mapper,   
+                                      IEnderecoRepository enderecoRepository)
         {
             _fornecedorRepository = fornecedorRepository;
+            _enderecoRepository = enderecoRepository;
             _mapper = mapper;
         }
 
@@ -117,6 +121,18 @@ namespace DevIO.App.Controllers
             }
 
             return PartialView("_AtualizarEndereco", new FornecedorViewModel { Endereco = fornecedor.Endereco });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AtualizarEndereco(FornecedorViewModel fornecedorViewModel)
+        {
+            //valida a modelState, se não estiver ok, retorna a partialView _AtualizarEndereco do fornecedorViewModel
+            if (!ModelState.IsValid) return PartialView(viewName: "_AtualizarEndereco", fornecedorViewModel);
+
+            //se tudo der certo, vamos salvar esse endereço no repositorio, porém não temos o metodo atualizar endereço. Esse método será incluido como um método do enderecoRepository
+            //como ainda nao temos um serviço de camada de negocios vamos injetar o IEnderecoRepository
+
         }
 
         private async Task<FornecedorViewModel> ObterFornecedorEndereco(Guid id)
