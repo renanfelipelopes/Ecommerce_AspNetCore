@@ -127,12 +127,13 @@ namespace DevIO.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AtualizarEndereco(FornecedorViewModel fornecedorViewModel)
         {
-            //valida a modelState, se não estiver ok, retorna a partialView _AtualizarEndereco do fornecedorViewModel
             if (!ModelState.IsValid) return PartialView(viewName: "_AtualizarEndereco", fornecedorViewModel);
 
-            //se tudo der certo, vamos salvar esse endereço no repositorio, porém não temos o metodo atualizar endereço. Esse método será incluido como um método do enderecoRepository
-            //como ainda nao temos um serviço de camada de negocios vamos injetar o IEnderecoRepository
+            await _enderecoRepository.Atualizar(_mapper.Map<Endereco>(fornecedorViewModel.Endereco));
+            
+            var url = Url.Action("ObterEndereco", controller: "Fornecedores", values: new { id = fornecedorViewModel.Endereco.FornecedorId });
 
+            return Json(data: new { success = true, url });
         }
 
         private async Task<FornecedorViewModel> ObterFornecedorEndereco(Guid id)
