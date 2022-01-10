@@ -7,6 +7,7 @@ using DevIO.Business.Interfaces;
 using AutoMapper;
 using AppMvcBasica.Models;
 using Thinktecture.IdentityModel.Authorization.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevIO.App.Controllers
 {
@@ -121,6 +122,20 @@ namespace DevIO.App.Controllers
             }
 
             return PartialView("_AtualizarEndereco", new FornecedorViewModel { Endereco = fornecedor.Endereco });
+        }
+
+        [AllowAnonymous]
+        [Route("obter-endereco-fornecedor/{id:guid}")]
+        public async Task<IActionResult> ObterEndereco(Guid id)
+        {
+            var fornecedor = await ObterFornecedorEndereco(id);
+
+            if (fornecedor == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_DetalhesEndereco", fornecedor);
         }
 
         [HttpPost]
