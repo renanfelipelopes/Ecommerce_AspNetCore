@@ -1,4 +1,5 @@
 using AppMvcCompleta.Data;
+using DevIO.App.Configurations;
 using DevIO.Business.Interfaces;
 using DevIO.Data.Context;
 using DevIO.Data.Repository;
@@ -62,11 +63,7 @@ namespace AppMvcCompleta
             })
             .SetCompatibilityVersion(version: Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
-            services.AddScoped<MeuDbContext>();
-            services.AddScoped<IProdutoRepository, ProdutoRepository>();
-            services.AddScoped<IFornecedorRepository, FornecedorRepository>();
-            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
-            services.AddSingleton<IValidationAttributeAdapterProvider, ValidationAttributeAdapterProvider>();
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
