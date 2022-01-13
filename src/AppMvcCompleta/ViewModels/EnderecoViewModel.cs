@@ -35,7 +35,7 @@ namespace DevIO.App.ViewModels
         [StringLength(50, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
         public string Estado { get; set; }
 
-        [HiddenInput] //O HiddenInput é uma propriedade que diz que esse campo sera sempre tratado como hidden (type=hidden) ao inves de um campo texto. É importante passar essas informações para que nosso Scaffold seja o mais acertivo possivel e tenhamos menos coisas para arrumar posteriomente
-        public Guid FornecedorId { get; set; } //O FornecedorId serve para saber a quem pertence esse endereço 
+        [HiddenInput] 
+        public Guid FornecedorId { get; set; } 
     }
 }
