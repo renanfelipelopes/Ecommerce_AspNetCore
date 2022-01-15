@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DevIO.Business.Interfaces
 {
-    interface IProdutoService
+    public interface IProdutoService
     {
         Task Adicionar(Produto produto);
         
