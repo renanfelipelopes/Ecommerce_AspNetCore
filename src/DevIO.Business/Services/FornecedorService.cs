@@ -10,22 +10,22 @@ namespace DevIO.Business.Services
     {
         public async Task Adicionar(Fornecedor fornecedor)
         {
+            // Validar o estado da entidade!
+            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
+                && !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return;
+        }
+
+        public async Task Atualizar(Fornecedor fornecedor)
+        {
             if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return;
-
-            return;
         }
 
-        public Task Atualizar(Fornecedor fornecedor)
+        public async Task AtualizarEndereco(Endereco endereco)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task AtualizarEndereco(Endereco endereco)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Remover(Guid id)
+            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
+        }                
+               
+        public async Task Remover(Guid id)
         {
             throw new NotImplementedException();
         }
