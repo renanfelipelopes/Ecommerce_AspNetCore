@@ -1,4 +1,5 @@
 ﻿using AppMvcBasica.Models;
+using DevIO.Business.Models.Validations.Documentos;
 using FluentValidation;
 
 namespace DevIO.Business.Models.Validations
@@ -13,10 +14,19 @@ namespace DevIO.Business.Models.Validations
 
             When(f => f.TipoFornecedor == TipoFornecedor.PessoaFisica, action: () =>
             {
-                //RuleFor(expression: f => f.Documento.Length)
+                RuleFor(f => f.Documento.Length).Equal(CpfValidacao.TamanhoCpf)
+                    .WithMessage("O campo Documento precisa ter {ComparisonValue} caracteres e foi fornecido {PropertyValue}.");
+                RuleFor(f => CpfValidacao.Validar(f.Documento)).Equal(true)
+                    .WithMessage("O Documento fornecido é inválido.");
             });
 
-            When(f => f.TipoFornecedor == TipoFornecedor.PessoaJuridica, action: () => { });
+            When(f => f.TipoFornecedor == TipoFornecedor.PessoaJuridica, action: () => 
+            {
+                RuleFor(f => f.Documento.Length).Equal(CnpjValidacao.TamanhoCnpj)
+                    .WithMessage("O campo Documento precisa ter {ComparisonValue} caracteres e foi fornecido {PropertyValue}.");
+                RuleFor(f => CnpjValidacao.Validar(f.Documento)).Equal(true)
+                    .WithMessage("O Documento fornecido é inválido.");
+            });
         }
     }
 }
