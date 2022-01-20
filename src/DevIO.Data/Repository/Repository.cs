@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DevIO.Data.Repository
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new() //esse new quer dizer que podemos dar um new() nessa Entity
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
     {
         protected readonly MeuDbContext Db;
 
@@ -25,8 +25,7 @@ namespace DevIO.Data.Repository
 
         public async Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate)
         {
-            //Aqui o metodo esta indo ate o banco de dados para a entidade especifica onde a expressao que for passada (predicate), retorna uma lista de forma assincrona
-            return await DbSet.AsNoTracking().Where(predicate).ToListAsync(); //oque é o Tracking? toda vez que colocamos algo na memoria, o EF começa a fazer o Tracking ou seja, a rastrear esse objeto, para perceber mudanças de estado, etc... só que se nós fazemos a leitura de objeto sem a intensao de devolve-lo para a base de dados, e sim apenas ler, ele fica no Tracking, entao essa consulta acaba ficando mais pesada, usando mais memoria. Entao o AsNoTracking tira essa funcao.
+            return await DbSet.AsNoTracking().Where(predicate).ToListAsync(); 
         }        
 
         public virtual async Task<TEntity> ObterPorId(Guid id)
