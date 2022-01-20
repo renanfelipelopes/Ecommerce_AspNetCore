@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AppMvcBasica.Models;
+using FluentValidation;
 
 namespace DevIO.Business.Models.Validations
 {
