@@ -36,6 +36,14 @@ namespace DevIO.Business.Services
         public async Task Atualizar(Fornecedor fornecedor)
         {
             if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return;
+
+            if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento && f.Id != fornecedor.Id).Result.Any())
+            {
+                Notificar("Já existe um fornecedor com este documento infomado.");
+                return;
+            }
+
+            await _fornecedorRepository.Atualizar(fornecedor);
         }
 
         public async Task AtualizarEndereco(Endereco endereco)
