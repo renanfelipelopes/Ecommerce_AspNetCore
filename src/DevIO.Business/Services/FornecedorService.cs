@@ -2,6 +2,7 @@
 using DevIO.Business.Interfaces;
 using DevIO.Business.Models.Validations;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevIO.Business.Services
@@ -49,11 +50,19 @@ namespace DevIO.Business.Services
         public async Task AtualizarEndereco(Endereco endereco)
         {
             if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
+
+            await _enderecoRepository.Atualizar(endereco);
         }                
                
         public async Task Remover(Guid id)
         {
-            throw new NotImplementedException();
+            if (_fornecedorRepository.ObterFornecedorProdutosEndereco(id).Result.Produtos.Any())
+            {
+                Notificar("O fornecedor possui produtos cadastrados!");
+                return;
+            }
+
+            await _fornecedorRepository.Remover(id);
         }
     }
 }
