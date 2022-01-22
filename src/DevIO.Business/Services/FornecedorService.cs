@@ -52,8 +52,8 @@ namespace DevIO.Business.Services
             if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
 
             await _enderecoRepository.Atualizar(endereco);
-        }                
-               
+        }
+
         public async Task Remover(Guid id)
         {
             if (_fornecedorRepository.ObterFornecedorProdutosEndereco(id).Result.Produtos.Any())
@@ -63,6 +63,12 @@ namespace DevIO.Business.Services
             }
 
             await _fornecedorRepository.Remover(id);
+        }
+
+        public void Dispose()
+        {
+            _fornecedorRepository?.Dispose();
+            _enderecoRepository?.Dispose();
         }
     }
 }
