@@ -8,6 +8,7 @@ using AutoMapper;
 using AppMvcBasica.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using DevIO.Business.Intefaces;
 
 namespace DevIO.App.Controllers
 {
@@ -21,7 +22,8 @@ namespace DevIO.App.Controllers
         public ProdutosController(IProdutoRepository produtoRepository,
                                   IFornecedorRepository fornecedorRepository,
                                   IMapper mapper, 
-                                  IProdutoService produtoService)
+                                  IProdutoService produtoService,
+                                  INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
