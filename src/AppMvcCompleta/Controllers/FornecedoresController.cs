@@ -8,10 +8,12 @@ using AutoMapper;
 using AppMvcBasica.Models;
 using Thinktecture.IdentityModel.Authorization.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using DevIO.Business.Intefaces;
+using DevIO.Business.Services;
 
 namespace DevIO.App.Controllers
 {
-    public class FornecedoresController : Controller
+    public class FornecedoresController : BaseService
     {
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IFornecedorService _fornecedorService;
@@ -19,7 +21,8 @@ namespace DevIO.App.Controllers
 
         public FornecedoresController(IFornecedorRepository fornecedorRepository, 
                                       IMapper mapper,
-                                      IFornecedorService fornecedorService)
+                                      IFornecedorService fornecedorService,
+                                      INotificador notificador) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
             _fornecedorService = fornecedorService;
