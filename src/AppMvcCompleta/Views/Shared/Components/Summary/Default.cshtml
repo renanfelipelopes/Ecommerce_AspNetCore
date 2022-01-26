@@ -1,16 +1,16 @@
 ﻿
-@if (ViewData.ModelState.ErrorCount > 0)
+@if (ViewData.ModelState.ErrorCount > 0) // valida se tem erros na modelState
 {
     <div style="padding-top: 15px;"></div>
 
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <h3 id="msgRetorno" style="padding-top: 20px">Opa! Algo deu errado :(</h3>
-        <div style="padding-top: 20px" asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div style="padding-top: 20px" asp-validation-summary="ModelOnly" class="text-danger"></div> @* <--- Aqui temos o asp-validation-summary e ModelOnly pq vai pegar somente os erros da ModelState, ou seja estamos tirando esse cara da Create.cshtml e trazendo ele pra cá, pq estamos fazendo a validação de forma especial. Não vamos mostrar os erros vindo somente da modelstate, mas agora nosso componente SummaryViewComponent irá capturar erros lançados lá da camada de negócios, vai colocar dentro da modelState e aqui vai exibir como se fosse um erro de model *@
     </div>
 }
 
-@if (!string.IsNullOrEmpty(ViewBag.Sucesso))
+@if (!string.IsNullOrEmpty(ViewBag.Sucesso)) @* Se a string não for nula nem vazia eu vou uma mensagem de sucesso dentro de uma caixinha  *@
 {
     <div style="padding-top: 15px"></div>
 
@@ -20,7 +20,7 @@
     </div>
 }
 
-@if (TempData["Sucesso"] != null)
+@if (TempData["Sucesso"] != null)  @*Muitas vezes a ViewBag não é o sulficiente. Se vai haver um redirecionamento lá dentro, você precisa usar um TempData. Aqui estamos fazendo a mesma coisa que no if acima, só que agora olhando para um TempData *@ 
 {
     <div style="padding-top: 15px"></div>
 
