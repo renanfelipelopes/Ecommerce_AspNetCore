@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using DevIO.App.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using DevIO.App.ViewModels;
-using DevIO.Business.Interfaces;
-using AutoMapper;
-using AppMvcBasica.Models;
-using Thinktecture.IdentityModel.Authorization.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using DevIO.Business.Intefaces;
-using DevIO.Business.Services;
+using DevIO.Business.Models;
+using Microsoft.AspNetCore.Authorization;
+using DevIO.Business.Interfaces;
+using AppMvcBasica.Models;
 
 namespace DevIO.App.Controllers
 {
-    public class FornecedoresController : BaseService
+    [Authorize]
+    public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IFornecedorService _fornecedorService;
         private readonly IMapper _mapper;
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, 
+        public FornecedoresController(IFornecedorRepository fornecedorRepository,
                                       IMapper mapper,
                                       IFornecedorService fornecedorService,
                                       INotificador notificador) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
-            _fornecedorService = fornecedorService;
             _mapper = mapper;
+            _fornecedorService = fornecedorService;
         }
 
         [Route("lista-de-fornecedores")]
