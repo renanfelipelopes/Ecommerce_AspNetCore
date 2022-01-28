@@ -161,6 +161,8 @@ namespace DevIO.App.Controllers
 
             if (!OperacaoValida()) return View(produto);
 
+            TempData["Sucesso"] = "Produto excluido com sucesso";
+
             return RedirectToAction("Index");
         }
 
