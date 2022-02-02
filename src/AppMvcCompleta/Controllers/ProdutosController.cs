@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using DevIO.Business.Interfaces;
 using DevIO.App.Extensions;
+using AppMvcBasica.Models;
 
 namespace DevIO.App.Controllers
 {
@@ -54,14 +55,14 @@ namespace DevIO.App.Controllers
             return View(produtoViewModel);
         }
 
-        [ClaimsAuthorize("", "")]
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [Route("novo-produto")]
         public async Task<IActionResult> Create()
         {
             var ProdutoViewModel = await PopularFornecedores(new ProdutoViewModel());
             return View(ProdutoViewModel);
         }
-        
+
         [Route("novo-produto")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -86,6 +87,7 @@ namespace DevIO.App.Controllers
             return RedirectToAction(actionName: "Index");
         }
 
+        [ClaimsAuthorize("Produto", "Editar")]
         [Route("editar-produto/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -99,6 +101,7 @@ namespace DevIO.App.Controllers
             return View(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Editar")]
         [Route("editar-produto/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -137,6 +140,7 @@ namespace DevIO.App.Controllers
             return RedirectToAction("Index");
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")]
         [Route("excluir-produto/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -150,6 +154,7 @@ namespace DevIO.App.Controllers
             return View(produto);
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")]
         [Route("excluir-produto/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
