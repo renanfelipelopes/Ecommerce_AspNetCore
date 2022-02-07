@@ -15,11 +15,9 @@ namespace AppMvcCompleta.Controllers
             return View();
         }
 
-        // Aqui nos erros, temos esse roteamento erro/id e o tamanho do erro que é 3 de 3, ou seja, precisa ter 3 posições, 3 caracteres no nosso erro que será recebido como int
         [Route("erro/{id:length(3,3)}")]
         public IActionResult Errors(int id)
         {
-            // Vamos passar essa modelErro para a View do error no final desse método. 
             var modelErro = new ErrorViewModel();
 
             if (id == 500)
