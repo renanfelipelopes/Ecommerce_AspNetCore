@@ -1,5 +1,3 @@
-using System;
-
 namespace AppMvcCompleta.ViewModels
 {
     public class ErrorViewModel
